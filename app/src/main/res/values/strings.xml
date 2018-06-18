@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">LetMeCode Interview task</string>
+
+    <string name="keywords">Keywords</string>
+    <string name="date">Date</string>
+    <string name="name_and_surname">  Name and/or Surname</string>
 </resources>
