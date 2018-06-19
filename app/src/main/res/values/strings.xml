@@ -4,4 +4,6 @@
     <string name="keywords">Keywords</string>
     <string name="date">Date</string>
     <string name="name_and_surname">  Name and/or Surname</string>
+    
+    <string name="api_key_nyt">020eb74eff674e3da8aaa1e8e311edda</string>
 </resources>

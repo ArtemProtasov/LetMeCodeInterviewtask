@@ -1,6 +1,7 @@
 package ru.protasov_dev.letmecodeinterviewtask;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,7 @@ import android.widget.EditText;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class ReviewesFragment extends Fragment{
+public class ReviewesFragment extends Fragment {
 
     private EditText keywords;
     private EditText date;
@@ -23,19 +24,24 @@ public class ReviewesFragment extends Fragment{
     private String dateForSearch;
     private String keywordForSearch;
 
+    private final String URL = "https://api.nytimes.com/svc/movies/v2/reviews/search.json";
+    public String url;
+
+    ProgressDialog progressDialog;
+
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.reviewes_fragment, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         keywords = getView().findViewById(R.id.keyword);
         date = getView().findViewById(R.id.data);
         date.setInputType(InputType.TYPE_NULL); //Не выводим клавиатуру
@@ -58,7 +64,7 @@ public class ReviewesFragment extends Fragment{
         dateForSearch = formatter.format(Date.getTimeInMillis());
         date.setText(dateForSearch);
         //Выполняем поиск при выборе даты
-
+        getReviews();
 
     }
 
@@ -72,4 +78,13 @@ public class ReviewesFragment extends Fragment{
         }
     };
 
+    private void getReviews() {
+        //progressDialog = ProgressDialog.show(getContext(), "Please, wait...", "Download reviews", true, false);
+
+        url = URL + "?" + "api-key:" + getString(R.string.api_key_nyt);
+
+        new ParseTask().execute();
+
+
+    }
 }
