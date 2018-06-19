@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-public class ReviewesFragment extends Fragment implements ParseTask.MyCustomCallBack{
+public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCustomCallBack{
 
     private EditText keywords;
     private EditText date;
@@ -61,6 +61,12 @@ public class ReviewesFragment extends Fragment implements ParseTask.MyCustomCall
         date.setInputType(InputType.TYPE_NULL); //Не выводим клавиатуру
         listReviews = getView().findViewById(R.id.list_reviews);
 
+        url = URL + "?" + "api-key=" + getString(R.string.api_key_nyt); //формируем URL (тут можем задать дополнительные параметры)
+
+        //Вызываем парсес
+        ParseTaskReviewes parseTaskReviewes = new ParseTaskReviewes(this, url);
+        parseTaskReviewes.execute();
+
         //При клике на поле ввода даты - отображаем диалог выбора даты
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,10 +102,11 @@ public class ReviewesFragment extends Fragment implements ParseTask.MyCustomCall
     private void getReviews() {
         //progressDialog = ProgressDialog.show(getContext(), "Please, wait...", "Download reviews", true, false);
 
-        url = URL + "?" + "api-key=" + getString(R.string.api_key_nyt);
+        url = URL + "?" + "api-key=" + getString(R.string.api_key_nyt); //формируем URL (тут можем задать дополнительные параметры)
 
-        ParseTask parseTask = new ParseTask(this, url);
-        parseTask.execute();
+        //Вызываем парсес
+        ParseTaskReviewes parseTaskReviewes = new ParseTaskReviewes(this, url);
+        parseTaskReviewes.execute();
     }
 
     @Override
@@ -114,15 +121,19 @@ public class ReviewesFragment extends Fragment implements ParseTask.MyCustomCall
         //Заполняем ParseTaskTwo нашими данными из JSON
         parseTaskTwo = gson.fromJson(strJson, ParseTaskTwo.class);
 
+        //В List получаем наш Result, основное, с чем будем работать
         results = parseTaskTwo.getResults();
 
+        //Тут извлекаем заголовки (Titles) в массив
         titles = new String[20];
         for (int i = 0; i < results.size(); i++) {
             titles[i] = results.get(i).getDisplayTitle();
         }
 
+        //И присваиваем адаптеру
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, titles);
 
+        //А в ListReviews устанавливаем адаптер
         listReviews.setAdapter(adapter);
     }
 }

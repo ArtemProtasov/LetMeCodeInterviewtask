@@ -8,16 +8,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class ParseTask extends AsyncTask<Void, Void, String> {
+public class ParseTaskReviewes extends AsyncTask<Void, Void, String> {
 
-    private String URL = "https://api.nytimes.com/svc/movies/v2/reviews/search.json?api-key=020eb74eff674e3da8aaa1e8e311edda";
+    private String URL;
     private HttpURLConnection urlConnection = null;
     private BufferedReader reader = null;
     private String resultJson = "";
 
     private MyCustomCallBack callback;
 
-    public ParseTask(final MyCustomCallBack callback, String readyMadeURL) {
+    public ParseTaskReviewes(final MyCustomCallBack callback, String readyMadeURL) {
         this.callback = callback;
         URL = readyMadeURL;
     }
@@ -50,13 +50,15 @@ public class ParseTask extends AsyncTask<Void, Void, String> {
         return resultJson; //Полный JSON со страницы в формате String
     }
 
+    //Здесь использовать onPostExecute вообще не вариант, поэтому перенесу его в ReviewesFragment
+    //там я хоть смогу заполнить ListView используя данные, полученные здесь
     @Override
     protected void onPostExecute(String strJson) {
-        if(callback!=null)
+        if(callback != null)
             callback.doSomething(strJson);
     }
 
-    public interface MyCustomCallBack
+    public interface MyCustomCallBack //интерфейс
     {
         public void doSomething(String someResult);
     }
