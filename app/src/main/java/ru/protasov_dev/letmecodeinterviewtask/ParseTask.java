@@ -1,17 +1,12 @@
 package ru.protasov_dev.letmecodeinterviewtask;
 
 import android.os.AsyncTask;
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 public class ParseTask extends AsyncTask<Void, Void, String> {
 
@@ -19,8 +14,13 @@ public class ParseTask extends AsyncTask<Void, Void, String> {
     private HttpURLConnection urlConnection = null;
     private BufferedReader reader = null;
     private String resultJson = "";
-    public ParseTaskTwo parseTaskTwo;
-    public List<Result> results;
+
+    private MyCustomCallBack callback;
+
+    public ParseTask(final MyCustomCallBack callback, String readyMadeURL) {
+        this.callback = callback;
+        URL = readyMadeURL;
+    }
 
     @Override
     protected String doInBackground(Void... voids) {
@@ -52,15 +52,12 @@ public class ParseTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String strJson) {
-        super.onPostExecute(strJson);
-        // выводим целиком полученную json-строку
-        Log.d("JSON: ", strJson);
+        if(callback!=null)
+            callback.doSomething(strJson);
+    }
 
-        //С помощью Gson будем разбирать json на составляющие
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-
-        //Заполняем ParseTaskTwo нашими данными из JSON
-        parseTaskTwo = gson.fromJson(strJson, ParseTaskTwo.class);
+    public interface MyCustomCallBack
+    {
+        public void doSomething(String someResult);
     }
 }
