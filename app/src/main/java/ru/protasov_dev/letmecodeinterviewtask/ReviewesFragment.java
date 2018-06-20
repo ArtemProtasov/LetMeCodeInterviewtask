@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -32,6 +33,8 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
 
     private EditText keywords;
     private EditText date;
+    private ImageButton clearKeywords;
+    private ImageButton clearDate;
     RecyclerView.LayoutManager layoutManager;
 
     public ParseTaskTwo parseTaskTwo;
@@ -40,7 +43,6 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     private Calendar Date = Calendar.getInstance();
 
     private String dateForSearch;
-    private String keywordForSearch;
 
     private final String URL = "https://api.nytimes.com/svc/movies/v2/reviews/search.json";
     public String url;
@@ -65,8 +67,9 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         keywords = getView().findViewById(R.id.keyword);
         date = getView().findViewById(R.id.data);
         date.setInputType(InputType.TYPE_NULL); //Не выводим клавиатуру
+        clearKeywords = getView().findViewById(R.id.clear_keywords);
+        clearDate = getView().findViewById(R.id.clear_date);
 
-        url = URL + "?" + "api-key=" + getString(R.string.api_key_nyt); //формируем URL (тут можем задать дополнительные параметры)
 
         //Вызываем парсес
         getReviews();
@@ -75,8 +78,7 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(getContext(), d, Date.get(Calendar.YEAR), Date.get(Calendar.MONTH), Date.get(Calendar.DAY_OF_MONTH))
-                        .show();
+                new DatePickerDialog(getContext(), d, Date.get(Calendar.YEAR), Date.get(Calendar.MONTH), Date.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -86,11 +88,28 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if(keyEvent != null && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER){
                     // обработка нажатия Enter
-                    url = url + "&query=" + keywords.getText().toString().replace(" ", "+");
                     getReviews();
                     return true;
                 }
                 return false;
+            }
+        });
+
+        //При нажатии на "Корзину" в Keywords - очищать Keywords
+        clearKeywords.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                keywords.setText(null);
+                getReviews();
+            }
+        });
+
+        //При нажатии на "Корзину" в Date - очищать Date
+        clearDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                date.setText(null);
+                getReviews();
             }
         });
 
@@ -112,6 +131,24 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 4000);
+    }
+
+    private void createURL(){
+        //Основной URL имеет вид:
+        //https://api.nytimes.com/svc/movies/v2/reviews/search.json?api-key=020eb74eff674e3da8aaa1e8e311edda
+        url = getString(R.string.main_url) + "?api-key=" + getString(R.string.api_key_nyt);
+        //Дальше проверяем, если поле Keywords заполнено, то
+        if(keywords.getText().length() != 0){
+            //Добавляем в URL "query"
+            //https://api.nytimes.com/svc/movies/v2/reviews/search.json?api-key=020eb74eff674e3da8aaa1e8e311edda&query=example+text
+            url += "&query=" + keywords.getText().toString().replace(" ", "+");
+        }
+        //Если поле с датой заполнено, то добавляем в URL "publication-date"
+        if(date.getText().length() != 0){
+            //И URL становится таким:
+            //https://api.nytimes.com/svc/movies/v2/reviews/search.json?api-key=020eb74eff674e3da8aaa1e8e311edda&order=by-publication-date&publication-date=INPUT_DATE
+            url += "&order=by-publication-date" + "&publication-date=" + date.getText().toString().replace("/", "-");
+        }
     }
 
     //Установка даты
@@ -141,6 +178,8 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
             list.clear();
             results.clear();
         }
+        //Формируем URL
+        createURL();
         //Вызываем парсес
         ParseTaskReviewes parseTaskReviewes = new ParseTaskReviewes(this, url);
         parseTaskReviewes.execute();
@@ -174,7 +213,10 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         String dateAndTime;
         for (int i = 0; i < results.size(); i++) {
             //Преобразуем дату и время в следующий формат: ГОД/МЕСЯЦ/ДЕНЬ ЧАС:МИНУТА:СЕКУНДА (так задано в ТЗ)
-            dateAndTime = results.get(i).getDateUpdated().replace("-", "/");
+            //Тут я установил дату публикации. Если нужна дата обновления статьи, то
+            //пишем за место getPublicationDate() -> getDateUpdated()
+            //если нужно дата открытия, то -> getOpeningDate
+            dateAndTime = results.get(i).getPublicationDate().replace("-", "/");
             try {
                 list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), results.get(i).getMultimedia().getSrc()));
             } catch (NullPointerException e){

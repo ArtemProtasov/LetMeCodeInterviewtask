@@ -15,11 +15,12 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:drawablePadding="12dp"
+        android:drawableStart="@drawable/ic_search"
+        android:imeOptions="actionGo"
         android:ems="10"
         android:hint="@string/keywords"
-        android:inputType="textPersonName"
-        android:drawableStart="@drawable/ic_search"
-        android:drawablePadding="12dp"/>
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/data"
@@ -36,8 +37,8 @@
         android:hint="@string/date"
         android:clickable="true"
         android:onClick="onclick"
+        android:focusable="false"
         android:drawableStart="@drawable/ic_calendar_alt"
-        android:focusable="true"
         android:drawablePadding="12dp"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -53,4 +54,21 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-8dp"/>
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <ImageButton
+        android:id="@+id/clear_keywords"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_alignEnd="@+id/keyword"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@drawable/ic_trash_alt" />
+
+    <ImageButton
+        android:id="@+id/clear_date"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_alignEnd="@+id/keyword"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="47dp"
+        app:srcCompat="@drawable/ic_trash_alt" />
 </RelativeLayout>
