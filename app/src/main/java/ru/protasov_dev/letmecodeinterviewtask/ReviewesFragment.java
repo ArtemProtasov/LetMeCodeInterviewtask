@@ -2,8 +2,10 @@ package ru.protasov_dev.letmecodeinterviewtask;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -11,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -25,11 +26,11 @@ import java.util.List;
 
 import ru.protasov_dev.letmecodeinterviewtask.Adapters.MyCustomAdapterReviewes;
 
-public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCustomCallBack{
+public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCustomCallBack, SwipeRefreshLayout.OnRefreshListener {
 
     private EditText keywords;
     private EditText date;
-    public ArrayAdapter<String> adapter;
+    RecyclerView.LayoutManager layoutManager;
 
     public ParseTaskTwo parseTaskTwo;
     private List<Result> results;
@@ -44,6 +45,8 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     public String url;
 
     private List<ReviewesElement> list;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,25 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
                         .show();
             }
         });
+
+        swipeRefreshLayout = getView().findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getReviews();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 4000);
     }
 
     //Установка даты
@@ -131,7 +153,7 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         }
 
         RecyclerView recyclerView = getView().findViewById(R.id.recycler_reviews);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         MyCustomAdapterReviewes adapterReviewes = new MyCustomAdapterReviewes(initData());
@@ -148,4 +170,5 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         }
         return list;
     }
+
 }
