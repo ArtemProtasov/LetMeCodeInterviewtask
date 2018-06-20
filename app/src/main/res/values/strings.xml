@@ -6,4 +6,6 @@
     <string name="name_and_surname">  Name and/or Surname</string>
     
     <string name="api_key_nyt">020eb74eff674e3da8aaa1e8e311edda</string>
+    <string name="scr_find">http://chudooptika.ru/image/cache/f073838d648c0acc7cac81f38dd42606.jpg</string>
+    <string name="no_result_or_no_internet">No result or no internet</string>
 </resources>

@@ -10,11 +10,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,7 +36,6 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
 
     public ParseTaskTwo parseTaskTwo;
     private List<Result> results;
-    public String titles[];
 
     private Calendar Date = Calendar.getInstance();
 
@@ -68,8 +69,7 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         url = URL + "?" + "api-key=" + getString(R.string.api_key_nyt); //формируем URL (тут можем задать дополнительные параметры)
 
         //Вызываем парсес
-        ParseTaskReviewes parseTaskReviewes = new ParseTaskReviewes(this, url);
-        parseTaskReviewes.execute();
+        getReviews();
 
         //При клике на поле ввода даты - отображаем диалог выбора даты
         date.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +77,20 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
             public void onClick(View view) {
                 new DatePickerDialog(getContext(), d, Date.get(Calendar.YEAR), Date.get(Calendar.MONTH), Date.get(Calendar.DAY_OF_MONTH))
                         .show();
+            }
+        });
+
+        //При нажатии Enter производим поиск по ключевым словам
+        keywords.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(keyEvent != null && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+                    // обработка нажатия Enter
+                    url = url + "&query=" + keywords.getText().toString().replace(" ", "+");
+                    getReviews();
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -123,9 +137,10 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     };
 
     private void getReviews() {
-
-        url = URL + "?" + "api-key=" + getString(R.string.api_key_nyt); //формируем URL (тут можем задать дополнительные параметры)
-
+        if(list != null && results != null) {
+            list.clear();
+            results.clear();
+        }
         //Вызываем парсес
         ParseTaskReviewes parseTaskReviewes = new ParseTaskReviewes(this, url);
         parseTaskReviewes.execute();
@@ -146,12 +161,6 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         //В List получаем наш Result, основное, с чем будем работать
         results = parseTaskTwo.getResults();
 
-        //Тут извлекаем заголовки (Titles) в массив
-        titles = new String[results.size()];
-        for (int i = 0; i < results.size(); i++) {
-            titles[i] = results.get(i).getDisplayTitle();
-        }
-
         RecyclerView recyclerView = getView().findViewById(R.id.recycler_reviews);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -166,7 +175,11 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         for (int i = 0; i < results.size(); i++) {
             //Преобразуем дату и время в следующий формат: ГОД/МЕСЯЦ/ДЕНЬ ЧАС:МИНУТА:СЕКУНДА (так задано в ТЗ)
             dateAndTime = results.get(i).getDateUpdated().replace("-", "/");
-            list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), results.get(i).getMultimedia().getSrc()));
+            try {
+                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), results.get(i).getMultimedia().getSrc()));
+            } catch (NullPointerException e){
+                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), getString(R.string.scr_find)));
+            }
         }
         return list;
     }
