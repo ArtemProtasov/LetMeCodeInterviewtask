@@ -1,10 +1,11 @@
 package ru.protasov_dev.letmecodeinterviewtask;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,20 +14,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import ru.protasov_dev.letmecodeinterviewtask.Adapters.MyCustomAdapterReviewes;
 
 public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCustomCallBack{
 
     private EditText keywords;
     private EditText date;
-    private ListView listReviews;
     public ArrayAdapter<String> adapter;
 
     public ParseTaskTwo parseTaskTwo;
@@ -41,7 +43,7 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     private final String URL = "https://api.nytimes.com/svc/movies/v2/reviews/search.json";
     public String url;
 
-    ProgressDialog progressDialog;
+    private List<ReviewesElement> list;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,6 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         keywords = getView().findViewById(R.id.keyword);
         date = getView().findViewById(R.id.data);
         date.setInputType(InputType.TYPE_NULL); //Не выводим клавиатуру
-        listReviews = getView().findViewById(R.id.list_reviews);
 
         url = URL + "?" + "api-key=" + getString(R.string.api_key_nyt); //формируем URL (тут можем задать дополнительные параметры)
 
@@ -100,7 +101,6 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     };
 
     private void getReviews() {
-        //progressDialog = ProgressDialog.show(getContext(), "Please, wait...", "Download reviews", true, false);
 
         url = URL + "?" + "api-key=" + getString(R.string.api_key_nyt); //формируем URL (тут можем задать дополнительные параметры)
 
@@ -125,15 +125,27 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         results = parseTaskTwo.getResults();
 
         //Тут извлекаем заголовки (Titles) в массив
-        titles = new String[20];
+        titles = new String[results.size()];
         for (int i = 0; i < results.size(); i++) {
             titles[i] = results.get(i).getDisplayTitle();
         }
 
-        //И присваиваем адаптеру
-        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, titles);
+        RecyclerView recyclerView = getView().findViewById(R.id.recycler_reviews);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        MyCustomAdapterReviewes adapterReviewes = new MyCustomAdapterReviewes(initData());
+        recyclerView.setAdapter(adapterReviewes);
+    }
 
-        //А в ListReviews устанавливаем адаптер
-        listReviews.setAdapter(adapter);
+    private List<ReviewesElement> initData() {
+        list = new ArrayList<>();
+        String dateAndTime;
+        for (int i = 0; i < results.size(); i++) {
+            //Преобразуем дату и время в следующий формат: ГОД/МЕСЯЦ/ДЕНЬ ЧАС:МИНУТА:СЕКУНДА (так задано в ТЗ)
+            dateAndTime = results.get(i).getDateUpdated().replace("-", "/");
+            list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), results.get(i).getMultimedia().getSrc()));
+        }
+        return list;
     }
 }

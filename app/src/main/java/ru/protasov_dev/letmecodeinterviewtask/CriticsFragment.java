@@ -77,7 +77,7 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
         //В List получаем наш Result, основное, с чем будем работать
         results = parseTaskThree.getResults();
 
-        //Тут извлекаем заголовки (Titles) в массив
+        //Тут извлекаем заголовки (Name) в массив
         titles = new String[results.size()];
         for (int i = 0; i < results.size(); i++) {
             titles[i] = results.get(i).getDisplayName();
@@ -86,7 +86,7 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
         //И присваиваем адаптеру
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, titles);
 
-        //А в ListReviews устанавливаем адаптер
+        //А в ListCritics устанавливаем адаптер
         listCritics.setAdapter(adapter);
     }
 }
