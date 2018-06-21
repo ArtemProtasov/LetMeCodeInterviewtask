@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+//Тут загрузка изображения по URL, возвращаем Bitmap
 public class ImageManager {
     static Bitmap bitmap;
     private final static String TAG = "ImageManager";
@@ -22,7 +23,7 @@ public class ImageManager {
                 bitmap = downloadImage(iUrl);
             }
         };
-        thread.setPriority(3);
+        thread.setPriority(10);
         thread.start();
         try {
             thread.join();

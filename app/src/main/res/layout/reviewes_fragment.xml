@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray">
-
 
     <EditText
         android:id="@+id/keyword"
@@ -17,9 +16,9 @@
         android:layout_marginStart="8dp"
         android:drawablePadding="12dp"
         android:drawableStart="@drawable/ic_search"
-        android:imeOptions="actionGo"
         android:ems="10"
         android:hint="@string/keywords"
+        android:imeOptions="actionGo"
         android:inputType="text" />
 
     <EditText
@@ -28,47 +27,74 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/keyword"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:ems="10"
-        android:inputType="date"
-        android:hint="@string/date"
+        android:layout_marginTop="-8dp"
         android:clickable="true"
-        android:onClick="onclick"
-        android:focusable="false"
+        android:drawablePadding="12dp"
         android:drawableStart="@drawable/ic_calendar_alt"
-        android:drawablePadding="12dp"/>
+        android:ems="10"
+        android:focusable="false"
+        android:hint="@string/date"
+        android:inputType="date"
+        android:onClick="onclick" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipe_container"
-        android:layout_below="@+id/data"
+        <ImageButton
+            android:id="@+id/clear_keywords"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_alignEnd="@+id/keyword"
+            android:layout_alignParentTop="true"
+            app:srcCompat="@drawable/ic_trash_alt" />
+
+        <ImageButton
+            android:id="@+id/clear_date"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_alignEnd="@+id/keyword"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="47dp"
+            app:srcCompat="@drawable/ic_trash_alt" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutReviewes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="40dp"
+        android:layout_below="@+id/data"
+        android:layout_marginTop="-9dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/prev_page"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_weight="1"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_angle_left" />
+
+        <ImageButton
+            android:id="@+id/next_page"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_weight="1"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_angle_right" />
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearLayoutReviewes">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_reviews"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="-8dp"/>
+            android:layout_marginTop="-8dp" />
     </android.support.v4.widget.SwipeRefreshLayout>
-
-    <ImageButton
-        android:id="@+id/clear_keywords"
-        android:layout_width="wrap_content"
-        android:layout_height="34dp"
-        android:layout_alignEnd="@+id/keyword"
-        android:layout_alignParentTop="true"
-        app:srcCompat="@drawable/ic_trash_alt"/>
-
-    <ImageButton
-        android:id="@+id/clear_date"
-        android:layout_width="wrap_content"
-        android:layout_height="34dp"
-        android:layout_alignEnd="@+id/keyword"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="47dp"
-        app:srcCompat="@drawable/ic_trash_alt" />
 </RelativeLayout>

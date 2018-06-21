@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,7 +36,10 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     private EditText date;
     private ImageButton clearKeywords;
     private ImageButton clearDate;
-    RecyclerView.LayoutManager layoutManager;
+    private ImageButton nextPage;
+    private ImageButton prevPage;
+    private RecyclerView.LayoutManager layoutManager;
+    int offset = 0;
 
     public ParseTaskTwo parseTaskTwo;
     private List<Result> results;
@@ -69,6 +73,8 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         date.setInputType(InputType.TYPE_NULL); //Не выводим клавиатуру
         clearKeywords = getView().findViewById(R.id.clear_keywords);
         clearDate = getView().findViewById(R.id.clear_date);
+        nextPage = getView().findViewById(R.id.next_page);
+        prevPage = getView().findViewById(R.id.prev_page);
 
 
         //Вызываем парсес
@@ -113,6 +119,29 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
             }
         });
 
+        //При нажатии на кнопку "Следующая страница" - подгружать следующую страницу
+        nextPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                offset += 20;
+                getReviews();
+            }
+        });
+
+        //При нажатии на кнопку "Предыдущая страница" - подгружать предыдующу страницу
+        prevPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Изначально offset == 0
+                if(offset >= 20){
+                    offset -= 20;
+                    getReviews();
+                } else {
+                    Snackbar.make(getView(), "You reached the top of the list", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         swipeRefreshLayout = getView().findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -136,7 +165,7 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     private void createURL(){
         //Основной URL имеет вид:
         //https://api.nytimes.com/svc/movies/v2/reviews/search.json?api-key=020eb74eff674e3da8aaa1e8e311edda
-        url = getString(R.string.main_url) + "?api-key=" + getString(R.string.api_key_nyt);
+        url = getString(R.string.main_url) + "?api-key=" + getString(R.string.api_key_nyt) + "&offset=" + offset;
         //Дальше проверяем, если поле Keywords заполнено, то
         if(keywords.getText().length() != 0){
             //Добавляем в URL "query"

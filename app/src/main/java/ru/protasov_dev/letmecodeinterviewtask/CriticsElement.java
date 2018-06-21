@@ -33,8 +33,4 @@ public class CriticsElement {
         ImageManager iM = new ImageManager();
         return iM.fetchImage(urlImg);
     }
-
-    public void setUrlImg(String urlImg) {
-        this.urlImg = urlImg;
-    }
 }

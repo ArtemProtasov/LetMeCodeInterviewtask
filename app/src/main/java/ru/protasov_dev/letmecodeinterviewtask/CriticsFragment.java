@@ -28,18 +28,12 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
 
     private EditText nameCritics;
     private ImageButton clearNameCritics;
-
-    RecyclerView.LayoutManager layoutManager;
-
-    public String url;
-
-    private List<CriticsElement> list;
-
-    public ParseTaskThree parseTaskThree;
-
-    private List<ResultCritics> results;
-
     private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView.LayoutManager layoutManager;
+    private List<CriticsElement> list;
+    public ParseTaskThree parseTaskThree;
+    private List<ResultCritics> results;
+    public String url;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -58,6 +52,7 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
         swipeRefreshLayout = getView().findViewById(R.id.swipe_container_critics);
         clearNameCritics = getView().findViewById(R.id.clear_critics_name);
 
+        //При нажатии на кнопку "Очистки" поля - очищаем поле и проводим новый поиск
         clearNameCritics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +66,6 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if(keyEvent != null && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER){
-                    // обработка нажатия Enter
                     getReviews();
                     return true;
                 }
@@ -79,10 +73,11 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
             }
         });
 
-        getReviews();
+        getReviews(); //При запуске фрагмента прогружаем посты
 
+        //Устанавливаем слушатель и какими цветами будет переливаться кружочек на
+        //Swipe-to-refresh
         swipeRefreshLayout.setOnRefreshListener(this);
-
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
@@ -115,13 +110,13 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
         //В List получаем наш Result, основное, с чем будем работать
         results = parseTaskThree.getResults();
 
-        RecyclerView recyclerView = getView().findViewById(R.id.recycler_critics);
+        final RecyclerView recyclerView = getView().findViewById(R.id.recycler_critics);
         layoutManager = new GridLayoutManager(getContext(), 2);     //В отличии от Reviewes, тут нужно вывести в 2 колонки.
                                                                               //Поэтому тут используется GridLayoutManager, за место Linear
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        MyCustomAdapterCritics adapterCritics = new MyCustomAdapterCritics(initData());
-        recyclerView.setAdapter(adapterCritics);
+        recyclerView.setLayoutManager(layoutManager); //Устанавливаем LayoutManager
+        recyclerView.setHasFixedSize(true); //Используем т.к. размер элементов у нас одинаковый
+        MyCustomAdapterCritics adapterCritics = new MyCustomAdapterCritics(initData()); //Создаем адаптер
+        recyclerView.setAdapter(adapterCritics); //и устанавливаем в RecyclerView
     }
 
     @Override
@@ -129,6 +124,7 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                //Если "потянули" вниз, то обновляем
                 getReviews();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -136,12 +132,11 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
     }
 
     private void getReviews(){
+        //Если лист и результаты не нулл, то очищаем их
         if(list != null && results != null) {
             list.clear();
             results.clear();
         }
-
-        createURL();
 
         //Формируем URL
         createURL();
@@ -152,6 +147,7 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
 
     private List<CriticsElement> initData() {
         list = new ArrayList<>();
+        //В лист добавляем элементы
         for (int i = 0; i < results.size(); i++) {
             try {
                 list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), results.get(i).getMultimedia().getResource().getSrc()));

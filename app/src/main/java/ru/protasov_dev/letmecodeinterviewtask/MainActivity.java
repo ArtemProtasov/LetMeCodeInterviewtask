@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ReviewesFragment(), "Reviewes");
-        adapter.addFragment(new CriticsFragment(), "Critics");
+        adapter.addFragment(new ReviewesFragment(), "Reviewes"); //Добавляем фрагмент ReviewesFragment
+        adapter.addFragment(new CriticsFragment(), "Critics"); //и CriticsFragment
         viewPager.setAdapter(adapter);
     }
 }
