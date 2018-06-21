@@ -1,34 +1,45 @@
 package ru.protasov_dev.letmecodeinterviewtask;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCustomCallBack{
+import ru.protasov_dev.letmecodeinterviewtask.Adapters.MyCustomAdapterCritics;
 
-    EditText nameCritics;
-    ListView listCritics;
-    public ArrayAdapter<String> adapter;
+public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCustomCallBack, SwipeRefreshLayout.OnRefreshListener{
 
-    private final String URL = "https://api.nytimes.com/svc/movies/v2/critics/all.json";
+    private EditText nameCritics;
+    private ImageButton clearNameCritics;
+
+    RecyclerView.LayoutManager layoutManager;
+
     public String url;
+
+    private List<CriticsElement> list;
 
     public ParseTaskThree parseTaskThree;
 
     private List<ResultCritics> results;
-    public String titles[];
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -44,22 +55,49 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         nameCritics = getView().findViewById(R.id.criticName);
-        listCritics = getView().findViewById(R.id.list_critics);
+        swipeRefreshLayout = getView().findViewById(R.id.swipe_container_critics);
+        clearNameCritics = getView().findViewById(R.id.clear_critics_name);
 
-        url = URL + "?" + "api-key=" + getString(R.string.api_key_nyt); //формируем URL (тут можем задать дополнительные параметры)
+        clearNameCritics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nameCritics.setText(null);
+                getReviews();
+            }
+        });
 
-        //Вызываем парсес
-        ParseTaskCritics parseTaskCritics = new ParseTaskCritics(this, url);
-        parseTaskCritics.execute();
+        //При нажатии Enter производим поиск по ключевым словам
+        nameCritics.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(keyEvent != null && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+                    // обработка нажатия Enter
+                    getReviews();
+                    return true;
+                }
+                return false;
+            }
+        });
 
+        getReviews();
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
-    private void getCritics(){
-        url = URL + "?" + "api-key=" + getString(R.string.api_key_nyt); //формируем URL (тут можем задать дополнительные параметры)
-
-        //Вызываем парсес
-        ParseTaskCritics parseTaskCritics = new ParseTaskCritics(this, url);
-        parseTaskCritics.execute();
+    private void createURL(){
+        //Основной URL имеет вид:
+        //https://api.nytimes.com/svc/movies/v2/critics/all.json?api-key=020eb74eff674e3da8aaa1e8e311edda
+        url = getString(R.string.main_url_critics) + "?api-key=" + getString(R.string.api_key_nyt);
+        //Дальше проверяем, если поле nameCritics заполнено, то
+        if(nameCritics.getText().length() != 0){
+            //Меняем в URL
+            url = getString(R.string.main_url_critics_search) + nameCritics.getText().toString().replace(" ", "%20") + ".json?api-key=" + getString(R.string.api_key_nyt);
+        }
     }
 
     @Override
@@ -77,16 +115,51 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
         //В List получаем наш Result, основное, с чем будем работать
         results = parseTaskThree.getResults();
 
-        //Тут извлекаем заголовки (Name) в массив
-        titles = new String[results.size()];
-        for (int i = 0; i < results.size(); i++) {
-            titles[i] = results.get(i).getDisplayName();
+        RecyclerView recyclerView = getView().findViewById(R.id.recycler_critics);
+        layoutManager = new GridLayoutManager(getContext(), 2);     //В отличии от Reviewes, тут нужно вывести в 2 колонки.
+                                                                              //Поэтому тут используется GridLayoutManager, за место Linear
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        MyCustomAdapterCritics adapterCritics = new MyCustomAdapterCritics(initData());
+        recyclerView.setAdapter(adapterCritics);
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getReviews();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 4000);
+    }
+
+    private void getReviews(){
+        if(list != null && results != null) {
+            list.clear();
+            results.clear();
         }
 
-        //И присваиваем адаптеру
-        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, titles);
+        createURL();
 
-        //А в ListCritics устанавливаем адаптер
-        listCritics.setAdapter(adapter);
+        //Формируем URL
+        createURL();
+        //Вызываем парсес
+        ParseTaskCritics parseTaskCritics = new ParseTaskCritics(this, url);
+        parseTaskCritics.execute();
     }
+
+    private List<CriticsElement> initData() {
+        list = new ArrayList<>();
+        for (int i = 0; i < results.size(); i++) {
+            try {
+                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), results.get(i).getMultimedia().getResource().getSrc()));
+            } catch (NullPointerException e){
+                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), getString(R.string.src_user_avatar)));
+            }
+        }
+        return list;
+    }
+
 }

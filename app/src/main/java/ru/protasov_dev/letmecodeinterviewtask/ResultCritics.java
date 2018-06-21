@@ -23,7 +23,7 @@ public class ResultCritics {
     private String seoName;
     @SerializedName("multimedia")
     @Expose
-    private Object multimedia;
+    private MultimediaCritics multimedia;
 
     public String getDisplayName() {
         return displayName;
@@ -65,11 +65,11 @@ public class ResultCritics {
         this.seoName = seoName;
     }
 
-    public Object getMultimedia() {
+    public MultimediaCritics getMultimedia() {
         return multimedia;
     }
 
-    public void setMultimedia(Object multimedia) {
+    public void setMultimedia(MultimediaCritics multimedia) {
         this.multimedia = multimedia;
     }
 

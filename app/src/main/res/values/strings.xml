@@ -10,4 +10,7 @@
     <string name="no_result_or_no_internet">No result or no internet</string>
     
     <string name="main_url">https://api.nytimes.com/svc/movies/v2/reviews/search.json</string>
+    <string name="main_url_critics">https://api.nytimes.com/svc/movies/v2/critics/all.json</string>
+    <string name="main_url_critics_search">https://api.nytimes.com/svc/movies/v2/critics/</string>
+    <string name="src_user_avatar">http://protasov-dev.ru/img_for_github/avatar.jpg</string>
 </resources>

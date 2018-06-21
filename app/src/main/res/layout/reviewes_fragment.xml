@@ -61,7 +61,7 @@
         android:layout_height="34dp"
         android:layout_alignEnd="@+id/keyword"
         android:layout_alignParentTop="true"
-        app:srcCompat="@drawable/ic_trash_alt" />
+        app:srcCompat="@drawable/ic_trash_alt"/>
 
     <ImageButton
         android:id="@+id/clear_date"
