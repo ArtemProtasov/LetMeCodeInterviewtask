@@ -56,5 +56,5 @@ _Примеры поиска доступны в api консоли._
 
 **Устройства, на которых проводилось тестирование:**
 
->Elephone P9000 (Android 6.0)
->Google Nexus 5X (Android 6.0)
+>1. Elephone P9000 (Android 6.0)
+>2. Google Nexus 5X (Android 6.0)
