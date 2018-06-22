@@ -19,7 +19,6 @@ import ru.protasov_dev.letmecodeinterviewtask.R;
 
 public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapterCritics.ViewHolder> {
     private static List<CriticsElement> list;
-    private static String url;
 
     public MyCustomAdapterCritics(List<CriticsElement> list){
         MyCustomAdapterCritics.list = list;
@@ -37,11 +36,9 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         CriticsElement criticsElement = list.get(position);
-        url = criticsElement.getUrlImg();
         Glide.with(criticsElement.getContext())
-                .load(url)
+                .load(criticsElement.getUrlImg())
                 .into(holder.imgCritics);
-        //holder.imgCritics.setImageBitmap(criticsElement.getImg());
         holder.txtNameCritics.setText(criticsElement.getName());
         holder.txtStatusCritics.setText(criticsElement.getStatus());
     }
@@ -76,7 +73,7 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
             startCriticPage.putExtra("STATUS", status);
             CriticsElement ce = list.get(getPosition());
             startCriticPage.putExtra("BIO", ce.getBio());
-            startCriticPage.putExtra("IMG_URL", url);
+            startCriticPage.putExtra("IMG_URL", ce.getUrlImg());
 
 
             view.getContext().startActivity(startCriticPage);

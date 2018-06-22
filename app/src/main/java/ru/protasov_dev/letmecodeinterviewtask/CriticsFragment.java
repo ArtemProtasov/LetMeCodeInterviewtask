@@ -174,6 +174,7 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
             } catch (NullPointerException e){
                 list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), getString(R.string.src_user_avatar), getContext(), results.get(i).getBio()));
             }
+
         }
         return list;
     }

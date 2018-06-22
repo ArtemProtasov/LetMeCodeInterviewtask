@@ -25,13 +25,6 @@ public class CriticsElement {
         return status;
     }
 
-//    public Bitmap getImg() {
-//        //ImageManager iM = new ImageManager();
-//        //return iM.fetchImage(urlImg);
-//        return imageLoader.loadImageSync(urlImg);
-//    }
-
-
     public Context getContext() {
         return context;
     }

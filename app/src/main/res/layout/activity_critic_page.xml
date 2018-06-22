@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/gray">
+    android:background="@color/bgn">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/txt_status"
                 android:layout_toEndOf="@+id/img_photo"
-                android:background="@color/gray" />
+                android:background="@color/bgn" />
 
             <ScrollView
                 android:layout_width="match_parent"

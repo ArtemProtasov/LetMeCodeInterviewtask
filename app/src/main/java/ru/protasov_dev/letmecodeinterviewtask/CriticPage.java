@@ -43,7 +43,7 @@ public class CriticPage extends AppCompatActivity implements SwipeRefreshLayout.
         String name = intent.getStringExtra("NAME");
         String status = intent.getStringExtra("STATUS");
         String bio = intent.getStringExtra("BIO");
-        String img = intent.getStringExtra("IMG_URL");
+        String img_url = intent.getStringExtra("IMG_URL");
 
         //Устанавливаем наш кастомный тулбар
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -65,7 +65,7 @@ public class CriticPage extends AppCompatActivity implements SwipeRefreshLayout.
         statusCritic.setText(status);
         ImageView imageView = findViewById(R.id.img_photo);
         Glide.with(this)
-                .load(img)
+                .load(img_url)
                 .into(imageView);
         TextView bioCritic = findViewById(R.id.txt_bio);
         bioCritic.setText(bio.replace("<br/>", " ")); //У A. O. Scott встречаются html теги в БИО. Заменю на пробелы

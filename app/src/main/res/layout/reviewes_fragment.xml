@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray">
+    android:background="@color/bgn">
 
     <EditText
         android:id="@+id/keyword"
@@ -42,6 +42,7 @@
         <ImageButton
             android:contentDescription="@string/desc_image"
             android:id="@+id/clear_keywords"
+            android:background="@color/bgn"
             android:layout_width="wrap_content"
             android:layout_height="34dp"
             android:layout_alignEnd="@+id/keyword"
@@ -51,6 +52,7 @@
         <ImageButton
             android:contentDescription="@string/desc_image"
             android:id="@+id/clear_date"
+            android:background="@color/bgn"
             android:layout_width="wrap_content"
             android:layout_height="34dp"
             android:layout_alignEnd="@+id/keyword"
@@ -73,6 +75,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:clickable="true"
+            android:background="@color/bgn"
             app:srcCompat="@drawable/ic_angle_left"
             android:focusable="true" />
 
@@ -83,6 +86,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:clickable="true"
+            android:background="@color/bgn"
             app:srcCompat="@drawable/ic_angle_right"
             android:focusable="true" />
     </LinearLayout>
