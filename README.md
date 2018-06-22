@@ -1,4 +1,4 @@
-# LetMeCodeInterviewtask
+# LetMeCodeInterviewtask. Задание
 ***
 **Платформа:** Android
 
@@ -44,17 +44,40 @@ _Примеры поиска доступны в api консоли._
 ## Макет
 ***Повторение дизайна приложенных к заданию макетов не обязательно, это будет дополнительным плюсом. Целью макетов является визуальное объяснение данного тестового задания.***
 
-![Рецензии](http://protasov-dev.ru/img_for_github/1.png)
-![Критики](http://protasov-dev.ru/img_for_github/2.png)
-![Инфо о критике](http://protasov-dev.ru/img_for_github/3.png)
-![Инфо о критике](http://protasov-dev.ru/img_for_github/4.png)
+![Техническое задание](http://protasov-dev.ru/img_for_github/tz.png)
 
+# LetMeCodeInterviewtask. Результат
 
 ---
 **Начал выполнять:** 18.06.2018
-**Закончил выполнять:** -
+**Закончил выполнять:** 23.06.2018
 
 **Устройства, на которых проводилось тестирование:**
 
->1. Elephone P9000 (Android 6.0)
->2. Google Nexus 5X (Android 6.0)
+>1. Elephone P9000 (Android 6.0) (Real device)
+>2. Google Nexus 5X (Android 6.0) (Emulator: Genymotion)
+
+## Вкладка "Рецензии"
+
+![Рецензии](http://protasov-dev.ru/img_for_github/reviewes.jpg)
+
+## Вкладка "Критики"
+
+![Критики](http://protasov-dev.ru/img_for_github/critics.jpg)
+
+## Экран "Критик"
+
+![Критик](http://protasov-dev.ru/img_for_github/critic.jpg)
+
+## Используемые технологии и языки
+
+> Android App
+>
+> Java
+> REST API
+> Glide v4
+> Gson
+
+## Комментарий
+
+
