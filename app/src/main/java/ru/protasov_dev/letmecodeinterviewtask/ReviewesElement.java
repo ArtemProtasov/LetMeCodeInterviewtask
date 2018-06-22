@@ -1,8 +1,6 @@
 package ru.protasov_dev.letmecodeinterviewtask;
 
-import android.graphics.Bitmap;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
+import android.content.Context;
 
 public class ReviewesElement {
     private String title;
@@ -10,15 +8,15 @@ public class ReviewesElement {
     private String date;
     private String byline;
     private String urlImg;
-    private ImageLoader imageLoader;
+    private Context context;
 
-    public ReviewesElement(String title, String summaryShort, String date, String byline, String urlImg, ImageLoader imageLoader){
+    public ReviewesElement(String title, String summaryShort, String date, String byline, String urlImg, Context context){
         this.title = title;
         this.summaryShort = summaryShort;
         this.date = date;
         this.byline = byline;
         this.urlImg = urlImg;
-        this.imageLoader = imageLoader;
+        this.context = context;
     }
 
     public String getTitle() {
@@ -37,9 +35,16 @@ public class ReviewesElement {
         return byline;
     }
 
-    public Bitmap getImg() {
-//        ImageManager iM = new ImageManager();
-//        return iM.fetchImage(urlImg);
-        return imageLoader.loadImageSync(urlImg);
+//    public Bitmap getImg() {
+//        return imageLoader.loadImageSync(urlImg);
+//    }
+
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

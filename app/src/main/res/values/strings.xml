@@ -6,12 +6,12 @@
     <string name="name_and_surname">  Name and/or Surname</string>
     
     <string name="api_key_nyt">020eb74eff674e3da8aaa1e8e311edda</string>
-    <string name="scr_find">http://chudooptika.ru/image/cache/f073838d648c0acc7cac81f38dd42606.jpg</string>
     
     <string name="main_url">https://api.nytimes.com/svc/movies/v2/reviews/search.json</string>
     <string name="main_url_critics">https://api.nytimes.com/svc/movies/v2/critics/all.json</string>
     <string name="main_url_critics_search">https://api.nytimes.com/svc/movies/v2/critics/</string>
     <string name="src_user_avatar">http://protasov-dev.ru/img_for_github/avatar.jpg</string>
+    <string name="src_search">http://protasov-dev.ru/img_for_github/no-imagee.jpg</string>
 
     <string name="invalid_par">Invalid parameter!</string>
     <string name="full_name">Enter the full name of the critic</string>

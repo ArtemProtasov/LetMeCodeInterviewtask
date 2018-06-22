@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import ru.protasov_dev.letmecodeinterviewtask.CriticPage;
@@ -17,6 +19,7 @@ import ru.protasov_dev.letmecodeinterviewtask.R;
 
 public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapterCritics.ViewHolder> {
     private static List<CriticsElement> list;
+    private static String url;
 
     public MyCustomAdapterCritics(List<CriticsElement> list){
         MyCustomAdapterCritics.list = list;
@@ -34,7 +37,11 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         CriticsElement criticsElement = list.get(position);
-        holder.imgCritics.setImageBitmap(criticsElement.getImg());
+        url = criticsElement.getUrlImg();
+        Glide.with(criticsElement.getContext())
+                .load(url)
+                .into(holder.imgCritics);
+        //holder.imgCritics.setImageBitmap(criticsElement.getImg());
         holder.txtNameCritics.setText(criticsElement.getName());
         holder.txtStatusCritics.setText(criticsElement.getStatus());
     }
@@ -69,7 +76,7 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
             startCriticPage.putExtra("STATUS", status);
             CriticsElement ce = list.get(getPosition());
             startCriticPage.putExtra("BIO", ce.getBio());
-            startCriticPage.putExtra("IMG", ce.getImg());
+            startCriticPage.putExtra("IMG_URL", url);
 
 
             view.getContext().startActivity(startCriticPage);

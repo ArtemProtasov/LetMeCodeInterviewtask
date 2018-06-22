@@ -3,7 +3,6 @@ package ru.protasov_dev.letmecodeinterviewtask;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -23,8 +22,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -226,13 +223,13 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     private List<ReviewesElement> initData() {
         list = new ArrayList<>();
         String dateAndTime;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                .permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getContext())
-                .build();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.init(config);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+//                .permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getContext())
+//                .build();
+//        ImageLoader imageLoader = ImageLoader.getInstance();
+//        imageLoader.init(config);
         for (int i = 0; i < results.size(); i++) {
             //Преобразуем дату и время в следующий формат: ГОД/МЕСЯЦ/ДЕНЬ ЧАС:МИНУТА:СЕКУНДА (так задано в ТЗ)
             //Тут я установил дату публикации. Если нужна дата обновления статьи, то
@@ -240,9 +237,9 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
             //если нужно дата открытия, то -> getOpeningDate
             dateAndTime = results.get(i).getPublicationDate().replace("-", "/");
             try {
-                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), results.get(i).getMultimedia().getSrc(), imageLoader));
+                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), results.get(i).getMultimedia().getSrc(), getContext()));
             } catch (NullPointerException e){
-                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), getString(R.string.scr_find), imageLoader));
+                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), getString(R.string.src_search), getContext()));
             }
         }
         return list;

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import ru.protasov_dev.letmecodeinterviewtask.R;
@@ -32,8 +34,10 @@ public class MyCustomAdapterReviewes extends RecyclerView.Adapter<MyCustomAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ReviewesElement reviewesElement = list.get(position);
-        //holder.imgReviewes.setImageResource();
-        holder.imgReviewes.setImageBitmap(reviewesElement.getImg());
+        Glide.with(reviewesElement.getContext())
+                .load(reviewesElement.getUrlImg())
+                .into(holder.imgReviewes);
+        //holder.imgReviewes.setImageBitmap(reviewesElement.getImg());
         holder.txtTitleReviewes.setText(reviewesElement.getTitle());
         holder.txtSummaryShortReviewes.setText(reviewesElement.getSummaryShort());
         holder.txtDateReviewes.setText(reviewesElement.getDate());

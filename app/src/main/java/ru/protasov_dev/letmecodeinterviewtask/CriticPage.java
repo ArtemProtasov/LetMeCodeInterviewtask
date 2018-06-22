@@ -1,10 +1,8 @@
 package ru.protasov_dev.letmecodeinterviewtask;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,10 +15,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +43,7 @@ public class CriticPage extends AppCompatActivity implements SwipeRefreshLayout.
         String name = intent.getStringExtra("NAME");
         String status = intent.getStringExtra("STATUS");
         String bio = intent.getStringExtra("BIO");
-        Bitmap img = intent.getParcelableExtra("IMG");
+        String img = intent.getStringExtra("IMG_URL");
 
         //Устанавливаем наш кастомный тулбар
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -67,7 +64,9 @@ public class CriticPage extends AppCompatActivity implements SwipeRefreshLayout.
         TextView statusCritic = findViewById(R.id.txt_status);
         statusCritic.setText(status);
         ImageView imageView = findViewById(R.id.img_photo);
-        imageView.setImageBitmap(img);
+        Glide.with(this)
+                .load(img)
+                .into(imageView);
         TextView bioCritic = findViewById(R.id.txt_bio);
         bioCritic.setText(bio.replace("<br/>", " ")); //У A. O. Scott встречаются html теги в БИО. Заменю на пробелы
 
@@ -160,13 +159,13 @@ public class CriticPage extends AppCompatActivity implements SwipeRefreshLayout.
     private List<ReviewesElement> initData() {
         list = new ArrayList<>();
         String dateAndTime;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                .permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-                .build();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.init(config);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+//                .permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+//                .build();
+//        ImageLoader imageLoader = ImageLoader.getInstance();
+//        imageLoader.init(config);
         for (int i = 0; i < results.size(); i++) {
             //Преобразуем дату и время в следующий формат: ГОД/МЕСЯЦ/ДЕНЬ ЧАС:МИНУТА:СЕКУНДА (так задано в ТЗ)
             //Тут я установил дату публикации. Если нужна дата обновления статьи, то
@@ -174,9 +173,9 @@ public class CriticPage extends AppCompatActivity implements SwipeRefreshLayout.
             //если нужно дата открытия, то -> getOpeningDate
             dateAndTime = results.get(i).getPublicationDate().replace("-", "/");
             try {
-                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), results.get(i).getMultimedia().getSrc(), imageLoader));
+                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), results.get(i).getMultimedia().getSrc(), this));
             } catch (NullPointerException e){
-                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), getString(R.string.scr_find), imageLoader));
+                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), getString(R.string.src_search), this));
             }
         }
         return list;

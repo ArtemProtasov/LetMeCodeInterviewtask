@@ -1,22 +1,20 @@
 package ru.protasov_dev.letmecodeinterviewtask;
 
-import android.graphics.Bitmap;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
+import android.content.Context;
 
 public class CriticsElement {
     private String name;
     private String status;
     private String urlImg;
-    private ImageLoader imageLoader;
     private String bio;
+    private Context context;
 
-    public CriticsElement(String name, String status, String urlImg, ImageLoader imageLoader, String bio){
+    public CriticsElement(String name, String status, String urlImg, Context context, String bio){
         this.name = name;
         this.status = status;
         this.urlImg = urlImg;
-        this.imageLoader = imageLoader;
         this.bio = bio;
+        this.context = context;
     }
 
     public String getName() {
@@ -27,10 +25,19 @@ public class CriticsElement {
         return status;
     }
 
-    public Bitmap getImg() {
-        //ImageManager iM = new ImageManager();
-        //return iM.fetchImage(urlImg);
-        return imageLoader.loadImageSync(urlImg);
+//    public Bitmap getImg() {
+//        //ImageManager iM = new ImageManager();
+//        //return iM.fetchImage(urlImg);
+//        return imageLoader.loadImageSync(urlImg);
+//    }
+
+
+    public Context getContext() {
+        return context;
+    }
+
+    public String getUrlImg() {
+        return urlImg;
     }
 
     public String getBio() {

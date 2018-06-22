@@ -3,7 +3,6 @@ package ru.protasov_dev.letmecodeinterviewtask;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,8 +20,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,20 +159,20 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
 
     private List<CriticsElement> initData() {
         list = new ArrayList<>();
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                .permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getContext())
-                .threadPoolSize(3)
-                .build();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.init(config);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+//                .permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getContext())
+//                .threadPoolSize(3)
+//                .build();
+//        ImageLoader imageLoader = ImageLoader.getInstance();
+//        imageLoader.init(config);
         //В лист добавляем элементы
         for (int i = 0; i < results.size(); i++) {
             try {
-                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), results.get(i).getMultimedia().getResource().getSrc(), imageLoader, results.get(i).getBio()));
+                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), results.get(i).getMultimedia().getResource().getSrc(), getContext(), results.get(i).getBio()));
             } catch (NullPointerException e){
-                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), getString(R.string.src_user_avatar), imageLoader, results.get(i).getBio()));
+                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), getString(R.string.src_user_avatar), getContext(), results.get(i).getBio()));
             }
         }
         return list;
