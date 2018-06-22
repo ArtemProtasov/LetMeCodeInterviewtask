@@ -37,10 +37,10 @@
         android:ems="10"
         android:focusable="false"
         android:hint="@string/date"
-        android:inputType="date"
-        android:onClick="onclick" />
+        android:inputType="date" />
 
         <ImageButton
+            android:contentDescription="@string/desc_image"
             android:id="@+id/clear_keywords"
             android:layout_width="wrap_content"
             android:layout_height="34dp"
@@ -49,6 +49,7 @@
             app:srcCompat="@drawable/ic_trash_alt" />
 
         <ImageButton
+            android:contentDescription="@string/desc_image"
             android:id="@+id/clear_date"
             android:layout_width="wrap_content"
             android:layout_height="34dp"
@@ -66,22 +67,24 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:contentDescription="@string/desc_image_button"
             android:id="@+id/prev_page"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_alignParentStart="true"
             android:layout_weight="1"
             android:clickable="true"
-            app:srcCompat="@drawable/ic_angle_left" />
+            app:srcCompat="@drawable/ic_angle_left"
+            android:focusable="true" />
 
         <ImageButton
+            android:contentDescription="@string/desc_image_button"
             android:id="@+id/next_page"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
             android:layout_weight="1"
             android:clickable="true"
-            app:srcCompat="@drawable/ic_angle_right" />
+            app:srcCompat="@drawable/ic_angle_right"
+            android:focusable="true" />
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"

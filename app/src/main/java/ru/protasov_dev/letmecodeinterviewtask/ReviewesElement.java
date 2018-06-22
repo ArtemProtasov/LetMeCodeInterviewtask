@@ -25,41 +25,21 @@ public class ReviewesElement {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getSummaryShort() {
         return summaryShort;
-    }
-
-    public void setSummaryShort(String summaryShort) {
-        this.summaryShort = summaryShort;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getByline() {
         return byline;
-    }
-
-    public void setByline(String byline) {
-        this.byline = byline;
     }
 
     public Bitmap getImg() {
 //        ImageManager iM = new ImageManager();
 //        return iM.fetchImage(urlImg);
         return imageLoader.loadImageSync(urlImg);
-    }
-
-    public void setUrlImg(String urlImg) {
-        this.urlImg = urlImg;
     }
 }

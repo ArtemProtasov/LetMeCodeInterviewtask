@@ -12,9 +12,4 @@ public class MultimediaCritics {
     public ResourceMultimediaCritics getResource() {
         return resource;
     }
-
-    public void setResource(ResourceMultimediaCritics resource) {
-        this.resource = resource;
-    }
-
 }

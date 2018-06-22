@@ -29,48 +29,15 @@ public class ResultCritics {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public String getSortName() {
-        return sortName;
-    }
-
-    public void setSortName(String sortName) {
-        this.sortName = sortName;
-    }
-
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getBio() {
         return bio;
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public String getSeoName() {
-        return seoName;
-    }
-
-    public void setSeoName(String seoName) {
-        this.seoName = seoName;
-    }
-
     public MultimediaCritics getMultimedia() {
         return multimedia;
     }
-
-    public void setMultimedia(MultimediaCritics multimedia) {
-        this.multimedia = multimedia;
-    }
-
 }

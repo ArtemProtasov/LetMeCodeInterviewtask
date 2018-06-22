@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import ru.protasov_dev.letmecodeinterviewtask.Adapters.MyCustomAdapterReviewes;
 
@@ -38,18 +39,12 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     private EditText keywords;
     private EditText date;
     private int offset = 0;
-    public ParseTaskTwo parseTaskTwo;
+    private ParseTaskTwo parseTaskTwo;
     private List<Result> results;
     private Calendar Date = Calendar.getInstance();
-    private final String URL = "https://api.nytimes.com/svc/movies/v2/reviews/search.json";
-    public String url;
+    private String url;
     private List<ReviewesElement> list;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -174,7 +169,7 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     //Установка даты
     private void setInitialDate() {
         //Преобразуем с помощью SimpleDateFormat дату в миллисекундах в следующий формат: ГОД/МЕСЯЦ/ДЕНЬ (так задано в ТЗ)
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
         //И сразу устанавливаем в поле ввода форматированную дату
         String dateForSearch = formatter.format(Date.getTimeInMillis());
         date.setText(dateForSearch);
@@ -184,7 +179,7 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     }
 
     //Установка обработчика выбора даты
-    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+    private DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             Date.set(Calendar.YEAR, year);
             Date.set(Calendar.MONTH, monthOfYear);

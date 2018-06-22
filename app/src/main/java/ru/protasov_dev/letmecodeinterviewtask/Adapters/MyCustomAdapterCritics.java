@@ -2,7 +2,6 @@ package ru.protasov_dev.letmecodeinterviewtask.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +17,9 @@ import ru.protasov_dev.letmecodeinterviewtask.R;
 
 public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapterCritics.ViewHolder> {
     private static List<CriticsElement> list;
-    private CriticsElement criticsElement;
 
     public MyCustomAdapterCritics(List<CriticsElement> list){
-        this.list = list;
+        MyCustomAdapterCritics.list = list;
     }
 
     @Override
@@ -35,7 +33,7 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        criticsElement = list.get(position);
+        CriticsElement criticsElement = list.get(position);
         holder.imgCritics.setImageBitmap(criticsElement.getImg());
         holder.txtNameCritics.setText(criticsElement.getName());
         holder.txtStatusCritics.setText(criticsElement.getStatus());
@@ -50,7 +48,6 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
         ImageView imgCritics;
         TextView txtNameCritics;
         TextView txtStatusCritics;
-        CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -58,7 +55,6 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
             imgCritics = itemView.findViewById(R.id.critic_photo);
             txtNameCritics = itemView.findViewById(R.id.critic_name);
             txtStatusCritics = itemView.findViewById(R.id.status);
-            cardView = itemView.findViewById(R.id.card_view_critics);
 
             imgCritics.setOnClickListener(this);
         }

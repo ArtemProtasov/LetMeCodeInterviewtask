@@ -19,6 +19,7 @@
             android:padding="10dp">
 
             <ImageView
+                android:contentDescription="@string/desc_image"
                 android:id="@+id/img_reviewes"
                 android:layout_width="105dp"
                 android:layout_height="70dp"
@@ -49,7 +50,7 @@
                 android:id="@+id/txt_byline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_below="@+id/txt_summary_short_reviewes"
                 android:layout_marginTop="5dp"
                 android:textStyle="bold"
@@ -60,7 +61,7 @@
                 android:id="@+id/txt_date_reviewes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_below="@+id/txt_byline"
                 android:layout_marginTop="5dp"
                 android:textSize="10sp"

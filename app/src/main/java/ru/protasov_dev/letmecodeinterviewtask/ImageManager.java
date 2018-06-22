@@ -33,7 +33,7 @@ public class ImageManager {
         return bitmap;
     }
 
-    public static Bitmap downloadImage(String iUrl) {
+    private static Bitmap downloadImage(String iUrl) {
         bitmap = null;
         HttpURLConnection conn = null;
         BufferedInputStream buf_stream = null;
@@ -57,8 +57,13 @@ public class ImageManager {
             Log.w(TAG, "Недостаточно памяти");
             return null;
         } finally {
-            if ( buf_stream != null )
-                try { buf_stream.close(); } catch (IOException ex) {}
+            if ( buf_stream != null ) {
+                try {
+                    buf_stream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             if ( conn != null )
                 conn.disconnect();
         }

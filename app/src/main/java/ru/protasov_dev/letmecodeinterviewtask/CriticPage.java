@@ -29,11 +29,10 @@ import ru.protasov_dev.letmecodeinterviewtask.Adapters.MyCustomAdapterReviewes;
 
 public class CriticPage extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, ParseTaskReviewes.MyCustomCallBack{
     private SwipeRefreshLayout refreshLayout;
-    public ParseTaskThree parseTaskThree;
     private String URL;
 
     private int offset = 0;
-    public ParseTaskTwo parseTaskTwo;
+    private ParseTaskTwo parseTaskTwo;
     private List<Result> results;
     private List<ReviewesElement> list;
 

@@ -58,6 +58,6 @@ public class ParseTaskReviewes extends AsyncTask<Void, Void, String> {
 
     public interface MyCustomCallBack //интерфейс
     {
-        public void doSomething(String someResult);
+        void doSomething(String someResult);
     }
 }

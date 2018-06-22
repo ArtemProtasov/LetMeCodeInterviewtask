@@ -17,6 +17,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:contentDescription="@string/desc_image"
                 android:id="@+id/critic_photo"
                 android:layout_width="163dp"
                 android:layout_height="220dp"
@@ -25,7 +26,8 @@
                 android:layout_centerHorizontal="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/ic_launcher"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/critic_name"
@@ -48,7 +50,7 @@
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textStyle="italic"
                 android:layout_centerHorizontal="true"/>
 

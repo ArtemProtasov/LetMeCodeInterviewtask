@@ -34,14 +34,9 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
     private EditText nameCritics;
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<CriticsElement> list;
-    public ParseTaskThree parseTaskThree;
+    private ParseTaskThree parseTaskThree;
     private List<ResultCritics> results;
-    public String url;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-    }
+    private String url;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -49,7 +49,7 @@ public class ParseTaskCritics extends AsyncTask<Void, Void, String> {
     }
 
     //Здесь использовать onPostExecute вообще не вариант, поэтому перенесу его в ReviewesFragment
-    //там я хоть смогу заполнить ListView используя данные, полученные здесь
+    //там я смогу заполнить ListView используя данные, полученные здесь
     @Override
     protected void onPostExecute(String strJson) {
         if(callback != null)
@@ -58,6 +58,6 @@ public class ParseTaskCritics extends AsyncTask<Void, Void, String> {
 
     public interface MyCustomCallBack //интерфейс
     {
-        public void doSomething(String someResult);
+        void doSomething(String someResult);
     }
 }

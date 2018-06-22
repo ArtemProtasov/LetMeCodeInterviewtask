@@ -1,7 +1,6 @@
 package ru.protasov_dev.letmecodeinterviewtask.Adapters;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +52,6 @@ public class MyCustomAdapterReviewes extends RecyclerView.Adapter<MyCustomAdapte
         TextView txtSummaryShortReviewes;
         TextView txtDateReviewes;
         TextView txtByline;
-        CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -63,7 +61,6 @@ public class MyCustomAdapterReviewes extends RecyclerView.Adapter<MyCustomAdapte
             txtSummaryShortReviewes = itemView.findViewById(R.id.txt_summary_short_reviewes);
             txtDateReviewes = itemView.findViewById(R.id.txt_date_reviewes);
             txtByline = itemView.findViewById(R.id.txt_byline);
-            cardView = itemView.findViewById(R.id.cardView);
         }
     }
 }

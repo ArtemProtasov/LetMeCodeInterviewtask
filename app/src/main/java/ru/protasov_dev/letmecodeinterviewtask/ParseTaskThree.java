@@ -21,36 +21,7 @@ public class ParseTaskThree {
     @Expose
     private List<ResultCritics> results = null;
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getCopyright() {
-        return copyright;
-    }
-
-    public void setCopyright(String copyright) {
-        this.copyright = copyright;
-    }
-
-    public Integer getNumResults() {
-        return numResults;
-    }
-
-    public void setNumResults(Integer numResults) {
-        this.numResults = numResults;
-    }
-
     public List<ResultCritics> getResults() {
         return results;
     }
-
-    public void setResults(List<ResultCritics> results) {
-        this.results = results;
-    }
-
 }
