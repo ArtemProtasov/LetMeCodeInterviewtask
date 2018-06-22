@@ -1,6 +1,7 @@
 package ru.protasov_dev.letmecodeinterviewtask.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ru.protasov_dev.letmecodeinterviewtask.CriticPage;
 import ru.protasov_dev.letmecodeinterviewtask.CriticsElement;
 import ru.protasov_dev.letmecodeinterviewtask.R;
 
@@ -36,7 +38,6 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
         holder.imgCritics.setImageBitmap(criticsElement.getImg());
         holder.txtNameCritics.setText(criticsElement.getName());
         holder.txtStatusCritics.setText(criticsElement.getStatus());
-
     }
 
     @Override
@@ -44,7 +45,7 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
         return list.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imgCritics;
         TextView txtNameCritics;
         TextView txtStatusCritics;
@@ -57,6 +58,23 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
             txtNameCritics = itemView.findViewById(R.id.critic_name);
             txtStatusCritics = itemView.findViewById(R.id.status);
             cardView = itemView.findViewById(R.id.card_view_critics);
+
+            imgCritics.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            String name = txtNameCritics.getText().toString();
+            Intent startCriticPage = new Intent(view.getContext(), CriticPage.class);
+            startCriticPage.putExtra("URL", createURL(name));
+            startCriticPage.putExtra("NAME", name);
+            view.getContext().startActivity(startCriticPage);
+        }
+
+        private String createURL(String name){
+            String url = "https://api.nytimes.com/svc/movies/v2/critics/";
+            url += name.replace(" ", "%20") + ".json?api-key=020eb74eff674e3da8aaa1e8e311edda";
+            return url;
         }
     }
 }
