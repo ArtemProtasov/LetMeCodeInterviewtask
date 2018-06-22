@@ -12,7 +12,7 @@ import java.net.URL;
 
 //Тут загрузка изображения по URL, возвращаем Bitmap
 public class ImageManager {
-    static Bitmap bitmap;
+    private static Bitmap bitmap;
     private final static String TAG = "ImageManager";
 
     public static Bitmap fetchImage(final String iUrl) {

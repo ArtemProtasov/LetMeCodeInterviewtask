@@ -2,6 +2,7 @@ package ru.protasov_dev.letmecodeinterviewtask;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +30,7 @@ import ru.protasov_dev.letmecodeinterviewtask.Adapters.MyCustomAdapterCritics;
 public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCustomCallBack, SwipeRefreshLayout.OnRefreshListener{
 
     private EditText nameCritics;
-    private ImageButton clearNameCritics;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerView.LayoutManager layoutManager;
     private List<CriticsElement> list;
     public ParseTaskThree parseTaskThree;
     private List<ResultCritics> results;
@@ -50,7 +51,7 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         nameCritics = getView().findViewById(R.id.criticName);
         swipeRefreshLayout = getView().findViewById(R.id.swipe_container_critics);
-        clearNameCritics = getView().findViewById(R.id.clear_critics_name);
+        ImageButton clearNameCritics = getView().findViewById(R.id.clear_critics_name);
 
         //При нажатии на кнопку "Очистки" поля - очищаем поле и проводим новый поиск
         clearNameCritics.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +112,7 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
         results = parseTaskThree.getResults();
 
         final RecyclerView recyclerView = getView().findViewById(R.id.recycler_critics);
-        layoutManager = new GridLayoutManager(getContext(), 2);     //В отличии от Reviewes, тут нужно вывести в 2 колонки.
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
                                                                               //Поэтому тут используется GridLayoutManager, за место Linear
         recyclerView.setLayoutManager(layoutManager); //Устанавливаем LayoutManager
         recyclerView.setHasFixedSize(true); //Используем т.к. размер элементов у нас одинаковый
@@ -147,15 +148,22 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
 
     private List<CriticsElement> initData() {
         list = new ArrayList<>();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getContext())
+                .threadPoolSize(3)
+                .build();
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.init(config);
         //В лист добавляем элементы
         for (int i = 0; i < results.size(); i++) {
             try {
-                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), results.get(i).getMultimedia().getResource().getSrc()));
+                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), results.get(i).getMultimedia().getResource().getSrc(), imageLoader));
             } catch (NullPointerException e){
-                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), getString(R.string.src_user_avatar)));
+                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), getString(R.string.src_user_avatar), imageLoader));
             }
         }
         return list;
     }
-
 }

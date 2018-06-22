@@ -3,6 +3,7 @@ package ru.protasov_dev.letmecodeinterviewtask;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,25 +37,13 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
 
     private EditText keywords;
     private EditText date;
-    private ImageButton clearKeywords;
-    private ImageButton clearDate;
-    private ImageButton nextPage;
-    private ImageButton prevPage;
-    private RecyclerView.LayoutManager layoutManager;
-    int offset = 0;
-
+    private int offset = 0;
     public ParseTaskTwo parseTaskTwo;
     private List<Result> results;
-
     private Calendar Date = Calendar.getInstance();
-
-    private String dateForSearch;
-
     private final String URL = "https://api.nytimes.com/svc/movies/v2/reviews/search.json";
     public String url;
-
     private List<ReviewesElement> list;
-
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
@@ -71,10 +62,10 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         keywords = getView().findViewById(R.id.keyword);
         date = getView().findViewById(R.id.data);
         date.setInputType(InputType.TYPE_NULL); //Не выводим клавиатуру
-        clearKeywords = getView().findViewById(R.id.clear_keywords);
-        clearDate = getView().findViewById(R.id.clear_date);
-        nextPage = getView().findViewById(R.id.next_page);
-        prevPage = getView().findViewById(R.id.prev_page);
+        ImageButton clearKeywords = getView().findViewById(R.id.clear_keywords);
+        ImageButton clearDate = getView().findViewById(R.id.clear_date);
+        ImageButton nextPage = getView().findViewById(R.id.next_page);
+        ImageButton prevPage = getView().findViewById(R.id.prev_page);
 
 
         //Вызываем парсес
@@ -185,7 +176,7 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         //Преобразуем с помощью SimpleDateFormat дату в миллисекундах в следующий формат: ГОД/МЕСЯЦ/ДЕНЬ (так задано в ТЗ)
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         //И сразу устанавливаем в поле ввода форматированную дату
-        dateForSearch = formatter.format(Date.getTimeInMillis());
+        String dateForSearch = formatter.format(Date.getTimeInMillis());
         date.setText(dateForSearch);
         //Выполняем поиск при выборе даты
         getReviews();
@@ -230,7 +221,7 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
         results = parseTaskTwo.getResults();
 
         RecyclerView recyclerView = getView().findViewById(R.id.recycler_reviews);
-        layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         MyCustomAdapterReviewes adapterReviewes = new MyCustomAdapterReviewes(initData());
@@ -240,6 +231,13 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     private List<ReviewesElement> initData() {
         list = new ArrayList<>();
         String dateAndTime;
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getContext())
+                .build();
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.init(config);
         for (int i = 0; i < results.size(); i++) {
             //Преобразуем дату и время в следующий формат: ГОД/МЕСЯЦ/ДЕНЬ ЧАС:МИНУТА:СЕКУНДА (так задано в ТЗ)
             //Тут я установил дату публикации. Если нужна дата обновления статьи, то
@@ -247,9 +245,9 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
             //если нужно дата открытия, то -> getOpeningDate
             dateAndTime = results.get(i).getPublicationDate().replace("-", "/");
             try {
-                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), results.get(i).getMultimedia().getSrc()));
+                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), results.get(i).getMultimedia().getSrc(), imageLoader));
             } catch (NullPointerException e){
-                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), getString(R.string.scr_find)));
+                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), getString(R.string.scr_find), imageLoader));
             }
         }
         return list;

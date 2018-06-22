@@ -11,8 +11,6 @@ import java.net.URL;
 public class ParseTaskCritics extends AsyncTask<Void, Void, String> {
 
     private String URL;
-    private HttpURLConnection urlConnection = null;
-    private BufferedReader reader = null;
     private String resultJson = "";
 
     private MyCustomCallBack callback;
@@ -28,14 +26,14 @@ public class ParseTaskCritics extends AsyncTask<Void, Void, String> {
         try {
             URL url = new URL(URL); //создаем URL
 
-            urlConnection = (HttpURLConnection) url.openConnection(); //открываем соединение
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET"); //используем метод GET
             urlConnection.connect(); //подключаемся
 
             InputStream inputStream = urlConnection.getInputStream(); //создаем входной поток
             StringBuffer buffer = new StringBuffer(); //и буфер
 
-            reader = new BufferedReader(new InputStreamReader(inputStream));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
             while ((line = reader.readLine()) != null) {
