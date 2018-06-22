@@ -1,11 +1,13 @@
 package ru.protasov_dev.letmecodeinterviewtask;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -58,7 +60,7 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
             @Override
             public void onClick(View view) {
                 nameCritics.setText(null);
-                getReviews();
+                getCritics();
             }
         });
 
@@ -67,14 +69,14 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if(keyEvent != null && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER){
-                    getReviews();
+                    getCritics();
                     return true;
                 }
                 return false;
             }
         });
 
-        getReviews(); //При запуске фрагмента прогружаем посты
+        getCritics(); //При запуске фрагмента прогружаем посты
 
         //Устанавливаем слушатель и какими цветами будет переливаться кружочек на
         //Swipe-to-refresh
@@ -108,8 +110,25 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
         //Заполняем ParseTaskTwo нашими данными из JSON
         parseTaskThree = gson.fromJson(strJson, ParseTaskThree.class);
 
-        //В List получаем наш Result, основное, с чем будем работать
-        results = parseTaskThree.getResults();
+        try {
+            //В List получаем наш Result, основное, с чем будем работать
+            results = parseTaskThree.getResults();
+        } catch (NullPointerException e) {
+            //Знаю, плохой вариант
+            AlertDialog.Builder builderDialog = new AlertDialog.Builder(getContext());
+            builderDialog.setTitle(getString(R.string.invalid_par))
+                    .setMessage(getString(R.string.full_name))
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setCancelable(false)
+                    .setNegativeButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alert = builderDialog.create();
+            alert.show();
+        }
 
         final RecyclerView recyclerView = getView().findViewById(R.id.recycler_critics);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
@@ -126,13 +145,13 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
             @Override
             public void run() {
                 //Если "потянули" вниз, то обновляем
-                getReviews();
+                getCritics();
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 4000);
     }
 
-    private void getReviews(){
+    private void getCritics(){
         //Если лист и результаты не нулл, то очищаем их
         if(list != null && results != null) {
             list.clear();
@@ -159,9 +178,9 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
         //В лист добавляем элементы
         for (int i = 0; i < results.size(); i++) {
             try {
-                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), results.get(i).getMultimedia().getResource().getSrc(), imageLoader));
+                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), results.get(i).getMultimedia().getResource().getSrc(), imageLoader, results.get(i).getBio()));
             } catch (NullPointerException e){
-                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), getString(R.string.src_user_avatar), imageLoader));
+                list.add(new CriticsElement(results.get(i).getDisplayName(), results.get(i).getStatus(), getString(R.string.src_user_avatar), imageLoader, results.get(i).getBio()));
             }
         }
         return list;

@@ -17,7 +17,8 @@ import ru.protasov_dev.letmecodeinterviewtask.CriticsElement;
 import ru.protasov_dev.letmecodeinterviewtask.R;
 
 public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapterCritics.ViewHolder> {
-    private List<CriticsElement> list;
+    private static List<CriticsElement> list;
+    private CriticsElement criticsElement;
 
     public MyCustomAdapterCritics(List<CriticsElement> list){
         this.list = list;
@@ -34,7 +35,7 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        CriticsElement criticsElement = list.get(position);
+        criticsElement = list.get(position);
         holder.imgCritics.setImageBitmap(criticsElement.getImg());
         holder.txtNameCritics.setText(criticsElement.getName());
         holder.txtStatusCritics.setText(criticsElement.getStatus());
@@ -65,15 +66,22 @@ public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapter
         @Override
         public void onClick(View view) {
             String name = txtNameCritics.getText().toString();
+            String status = txtStatusCritics.getText().toString();
             Intent startCriticPage = new Intent(view.getContext(), CriticPage.class);
             startCriticPage.putExtra("URL", createURL(name));
             startCriticPage.putExtra("NAME", name);
+            startCriticPage.putExtra("STATUS", status);
+            CriticsElement ce = list.get(getPosition());
+            startCriticPage.putExtra("BIO", ce.getBio());
+            startCriticPage.putExtra("IMG", ce.getImg());
+
+
             view.getContext().startActivity(startCriticPage);
         }
 
         private String createURL(String name){
-            String url = "https://api.nytimes.com/svc/movies/v2/critics/";
-            url += name.replace(" ", "%20") + ".json?api-key=020eb74eff674e3da8aaa1e8e311edda";
+            String url = "https://api.nytimes.com/svc/movies/v2/reviews/search.json";
+            url += "?api-key=020eb74eff674e3da8aaa1e8e311edda" + "&reviewer=" + name.replace(" ", "%20");
             return url;
         }
     }

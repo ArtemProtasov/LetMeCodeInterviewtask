@@ -17,7 +17,7 @@ public class ResultCritics {
     private String status;
     @SerializedName("bio")
     @Expose
-    private Object bio;
+    private String bio;
     @SerializedName("seo_name")
     @Expose
     private String seoName;
@@ -49,11 +49,11 @@ public class ResultCritics {
         this.status = status;
     }
 
-    public Object getBio() {
+    public String getBio() {
         return bio;
     }
 
-    public void setBio(Object bio) {
+    public void setBio(String bio) {
         this.bio = bio;
     }
 
