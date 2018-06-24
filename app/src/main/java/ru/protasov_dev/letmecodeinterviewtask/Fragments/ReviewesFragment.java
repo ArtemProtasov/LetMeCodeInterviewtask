@@ -1,4 +1,4 @@
-package ru.protasov_dev.letmecodeinterviewtask;
+package ru.protasov_dev.letmecodeinterviewtask.Fragments;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -30,6 +30,11 @@ import java.util.List;
 import java.util.Locale;
 
 import ru.protasov_dev.letmecodeinterviewtask.Adapters.MyCustomAdapterReviewes;
+import ru.protasov_dev.letmecodeinterviewtask.Elements.ReviewesElement;
+import ru.protasov_dev.letmecodeinterviewtask.ParseTaskManagers.ParseTaskReviewes;
+import ru.protasov_dev.letmecodeinterviewtask.ParseTaskManagers.ParseTaskTwo;
+import ru.protasov_dev.letmecodeinterviewtask.ParseTaskManagers.Result;
+import ru.protasov_dev.letmecodeinterviewtask.R;
 
 public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCustomCallBack, SwipeRefreshLayout.OnRefreshListener {
 
@@ -237,9 +242,23 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
             //если нужно дата открытия, то -> getOpeningDate
             dateAndTime = results.get(i).getPublicationDate().replace("-", "/");
             try {
-                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), results.get(i).getMultimedia().getSrc(), getContext()));
+                list.add(new ReviewesElement(results.get(i).getDisplayTitle(),
+                        results.get(i).getSummaryShort(),
+                        dateAndTime,
+                        results.get(i).getByline(),
+                        results.get(i).getMultimedia().getSrc(),
+                        getContext(),
+                        results.get(i).getLink().getSuggestedLinkText(),
+                        results.get(i).getLink().getUrl()));
             } catch (NullPointerException e){
-                list.add(new ReviewesElement(results.get(i).getDisplayTitle(), results.get(i).getSummaryShort(), dateAndTime, results.get(i).getByline(), getString(R.string.src_search), getContext()));
+                list.add(new ReviewesElement(results.get(i).getDisplayTitle(),
+                        results.get(i).getSummaryShort(),
+                        dateAndTime,
+                        results.get(i).getByline(),
+                        getString(R.string.src_search),
+                        getContext(),
+                        results.get(i).getLink().getSuggestedLinkText(),
+                        results.get(i).getLink().getUrl()));
             }
         }
         return list;

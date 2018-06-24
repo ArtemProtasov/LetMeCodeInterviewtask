@@ -37,7 +37,9 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:layout_toEndOf="@+id/img_reviewes"/>
+                android:clickable="true"
+                android:layout_toEndOf="@+id/img_reviewes"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/txt_summary_short_reviewes"

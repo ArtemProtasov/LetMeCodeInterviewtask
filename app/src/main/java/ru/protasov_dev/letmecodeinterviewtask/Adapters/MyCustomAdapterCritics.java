@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import ru.protasov_dev.letmecodeinterviewtask.CriticPage;
-import ru.protasov_dev.letmecodeinterviewtask.CriticsElement;
+import ru.protasov_dev.letmecodeinterviewtask.Activity.CriticPage;
+import ru.protasov_dev.letmecodeinterviewtask.Elements.CriticsElement;
 import ru.protasov_dev.letmecodeinterviewtask.R;
 
 public class MyCustomAdapterCritics extends RecyclerView.Adapter<MyCustomAdapterCritics.ViewHolder> {

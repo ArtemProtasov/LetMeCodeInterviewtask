@@ -1,12 +1,12 @@
 
-package ru.protasov_dev.letmecodeinterviewtask;
+package ru.protasov_dev.letmecodeinterviewtask.ParseTaskManagers;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ParseTaskThree {
+public class ParseTaskTwo {
 
     @SerializedName("status")
     @Expose
@@ -14,14 +14,20 @@ public class ParseTaskThree {
     @SerializedName("copyright")
     @Expose
     private String copyright;
+    @SerializedName("has_more")
+    @Expose
+    private Boolean hasMore;
     @SerializedName("num_results")
     @Expose
     private Integer numResults;
     @SerializedName("results")
     @Expose
-    private List<ResultCritics> results = null;
+    private List<Result> results = null;
 
-    public List<ResultCritics> getResults() {
+    public List<Result> getResults() {
         return results;
     }
+
+
+
 }

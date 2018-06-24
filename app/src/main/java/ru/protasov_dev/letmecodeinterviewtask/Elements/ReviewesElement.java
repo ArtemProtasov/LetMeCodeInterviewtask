@@ -1,4 +1,4 @@
-package ru.protasov_dev.letmecodeinterviewtask;
+package ru.protasov_dev.letmecodeinterviewtask.Elements;
 
 import android.content.Context;
 
@@ -9,14 +9,18 @@ public class ReviewesElement {
     private String byline;
     private String urlImg;
     private Context context;
+    private String urlPage;
+    private String suggestedLinkText;
 
-    public ReviewesElement(String title, String summaryShort, String date, String byline, String urlImg, Context context){
+    public ReviewesElement(String title, String summaryShort, String date, String byline, String urlImg, Context context, String urlPage, String suggestedLinkText){
         this.title = title;
         this.summaryShort = summaryShort;
         this.date = date;
         this.byline = byline;
         this.urlImg = urlImg;
         this.context = context;
+        this.urlPage = urlPage;
+        this.suggestedLinkText = suggestedLinkText;
     }
 
     public String getTitle() {
@@ -35,16 +39,19 @@ public class ReviewesElement {
         return byline;
     }
 
-//    public Bitmap getImg() {
-//        return imageLoader.loadImageSync(urlImg);
-//    }
-
-
     public String getUrlImg() {
         return urlImg;
     }
 
     public Context getContext() {
         return context;
+    }
+
+    public String getSuggestedLinkText() {
+        return suggestedLinkText;
+    }
+
+    public String getUrlPage() {
+        return urlPage;
     }
 }

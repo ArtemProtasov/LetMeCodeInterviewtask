@@ -1,4 +1,4 @@
-package ru.protasov_dev.letmecodeinterviewtask;
+package ru.protasov_dev.letmecodeinterviewtask.Fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -25,6 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.protasov_dev.letmecodeinterviewtask.Adapters.MyCustomAdapterCritics;
+import ru.protasov_dev.letmecodeinterviewtask.Elements.CriticsElement;
+import ru.protasov_dev.letmecodeinterviewtask.ParseTaskManagers.ParseTaskCritics;
+import ru.protasov_dev.letmecodeinterviewtask.ParseTaskManagers.ParseTaskThree;
+import ru.protasov_dev.letmecodeinterviewtask.ParseTaskManagers.ResultCritics;
+import ru.protasov_dev.letmecodeinterviewtask.R;
 
 public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCustomCallBack, SwipeRefreshLayout.OnRefreshListener{
 

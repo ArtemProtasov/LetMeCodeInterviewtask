@@ -1,4 +1,4 @@
-package ru.protasov_dev.letmecodeinterviewtask;
+package ru.protasov_dev.letmecodeinterviewtask.ParseTaskManagers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

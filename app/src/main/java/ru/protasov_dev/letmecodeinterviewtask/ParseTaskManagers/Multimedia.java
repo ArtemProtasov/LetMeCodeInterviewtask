@@ -1,9 +1,10 @@
-package ru.protasov_dev.letmecodeinterviewtask;
+
+package ru.protasov_dev.letmecodeinterviewtask.ParseTaskManagers;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ResourceMultimediaCritics {
+public class Multimedia {
 
     @SerializedName("type")
     @Expose
@@ -11,15 +12,12 @@ public class ResourceMultimediaCritics {
     @SerializedName("src")
     @Expose
     private String src;
-    @SerializedName("height")
-    @Expose
-    private Integer height;
     @SerializedName("width")
     @Expose
     private Integer width;
-    @SerializedName("credit")
+    @SerializedName("height")
     @Expose
-    private String credit;
+    private Integer height;
 
     public String getSrc() {
         return src;
