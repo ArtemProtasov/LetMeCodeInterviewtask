@@ -228,6 +228,7 @@ public class ReviewesFragment extends Fragment implements ParseTaskReviewes.MyCu
     private List<ReviewesElement> initData() {
         list = new ArrayList<>();
         String dateAndTime;
+//        Это очень плохой способ:D Руки за такое оторвать. Но для тестирования сгодится
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 //                .permitAll().build();
 //        StrictMode.setThreadPolicy(policy);

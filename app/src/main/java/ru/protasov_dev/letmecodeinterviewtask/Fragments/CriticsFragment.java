@@ -164,6 +164,7 @@ public class CriticsFragment extends Fragment implements ParseTaskCritics.MyCust
 
     private List<CriticsElement> initData() {
         list = new ArrayList<>();
+//        Это очень плохой способ:D Руки за такое оторвать. Но для тестирования сгодится
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 //                .permitAll().build();
 //        StrictMode.setThreadPolicy(policy);

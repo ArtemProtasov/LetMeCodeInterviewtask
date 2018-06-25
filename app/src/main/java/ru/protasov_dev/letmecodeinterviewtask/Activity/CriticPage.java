@@ -164,6 +164,7 @@ public class CriticPage extends AppCompatActivity implements SwipeRefreshLayout.
     private List<ReviewesElement> initData() {
         list = new ArrayList<>();
         String dateAndTime;
+//        Это очень плохой способ:D Руки за такое оторвать. Но для тестирования сгодится
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 //                .permitAll().build();
 //        StrictMode.setThreadPolicy(policy);
@@ -184,8 +185,8 @@ public class CriticPage extends AppCompatActivity implements SwipeRefreshLayout.
                         results.get(i).getByline(),
                         results.get(i).getMultimedia().getSrc(),
                         this,
-                        results.get(i).getLink().getUrl(),
-                        results.get(i).getLink().getSuggestedLinkText()));
+                        results.get(i).getLink().getSuggestedLinkText(),
+                        results.get(i).getLink().getUrl()));
             } catch (NullPointerException e){
                 list.add(new ReviewesElement(results.get(i).getDisplayTitle(),
                         results.get(i).getSummaryShort(),
@@ -193,8 +194,8 @@ public class CriticPage extends AppCompatActivity implements SwipeRefreshLayout.
                         results.get(i).getByline(),
                         getString(R.string.src_search),
                         this,
-                        results.get(i).getLink().getUrl(),
-                        results.get(i).getLink().getSuggestedLinkText()));
+                        results.get(i).getLink().getSuggestedLinkText(),
+                        results.get(i).getLink().getUrl()));
             }
         }
         return list;
